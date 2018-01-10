@@ -3,7 +3,7 @@ FROM debian:latest
 # Install APT packages
 RUN apt-get update && apt-get install -y wget curl telnet supervisor net-tools
 RUN apt-get -y --force-yes install cron telnet vim git nano make gcc g++ apt-transport-https sudo logrotate
-RUN apt-get -y --force-yes install procps uptimed gnupg2 apt-utils
+RUN apt-get -y --force-yes install procps uptimed gnupg2 apt-utils sysvinit-core systemd-sysv
 
 # Download & Install Debian packages
 
