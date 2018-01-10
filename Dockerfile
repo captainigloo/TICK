@@ -1,8 +1,11 @@
 FROM debian:latest
 
-RUN apt-get update && apt-get install -y wget curl telnet
+# Install APT packages
+RUN apt-get update && apt-get install -y wget curl telnet supervisor net-tools
+RUN apt-get -y --force-yes install cron telnet vim git nano make gcc g++ apt-transport-https sudo logrotate
+RUN apt-get -y --force-yes install procps uptimed gnupg2 apt-utils
 
-# Download & Install Debian package
+# Download & Install Debian packages
 
 #Telegraf
 RUN wget https://dl.influxdata.com/telegraf/releases/telegraf_1.5.0-1_amd64.deb \
@@ -21,8 +24,6 @@ RUN wget https://dl.influxdata.com/kapacitor/releases/kapacitor_1.4.0_amd64.deb
   && dpkg -i kapacitor_1.4.0_amd64.deb
 
 RUN influxd config > /etc/influxdb/influxdb.generated.conf
-
-RUN apt-get update && apt-get install -y supervisor net-tools
 
 # Configure supervisord
 ADD ./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
