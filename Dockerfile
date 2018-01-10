@@ -20,7 +20,7 @@ RUN wget https://dl.influxdata.com/chronograf/releases/chronograf_1.4.0.1_amd64.
   && dpkg -i chronograf_1.4.0.1_amd64.de
 
 # Kapacitor
-RUN wget https://dl.influxdata.com/kapacitor/releases/kapacitor_1.4.0_amd64.deb
+RUN wget https://dl.influxdata.com/kapacitor/releases/kapacitor_1.4.0_amd64.deb \
   && dpkg -i kapacitor_1.4.0_amd64.deb
 
 RUN influxd config > /etc/influxdb/influxdb.generated.conf
