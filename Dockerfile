@@ -19,7 +19,7 @@ RUN wget https://dl.influxdata.com/influxdb/releases/influxdb_1.4.2_amd64.deb \
   
 # Chronograf
 RUN wget https://dl.influxdata.com/chronograf/releases/chronograf_1.4.0.1_amd64.deb \
-  && dpkg -i chronograf_1.4.0.1_amd64.de
+  && dpkg -i chronograf_1.4.0.1_amd64.deb
 
 # Kapacitor
 RUN wget https://dl.influxdata.com/kapacitor/releases/kapacitor_1.4.0_amd64.deb \
