@@ -49,5 +49,4 @@ EXPOSE 10000
 EXPOSE 8083
 EXPOSE 8086
 EXPOSE 8088
-
 CMD     ["/usr/bin/supervisord"]
