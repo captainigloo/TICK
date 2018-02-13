@@ -1,3 +1,7 @@
+[![Docker Build Status](https://img.shields.io/docker/build/captainigloo69/TICK.svg)](https://hub.docker.com/r/captainigloo69/TICK/) [![Docker Pulls](https://img.shields.io/docker/pulls/captainigloo69/TICK.svg)](https://hub.docker.com/r/captainigloo69/TICK/) 
+[![Docker Stars](https://img.shields.io/docker/stars/captainigloo69/TICK.svg)](https://hub.docker.com/r/captainigloo69/TICK/)
+
+
 # TICK
 TICK (Telegraf, InfluxDB, Chronograf, Kapacitor) 
 
