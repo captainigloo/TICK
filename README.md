@@ -1,4 +1,4 @@
-[![Docker Build Status](https://img.shields.io/docker/build/captainigloo69/tick.svg)](https://hub.docker.com/r/captainigloo69/tick/) [!Docker Pulls](https://img.shields.io/docker/pulls/captainigloo69/tick.svg)](https://hub.docker.com/r/captainigloo69/tick/) 
+[![Docker Build Status](https://img.shields.io/docker/build/captainigloo69/tick.svg)](https://hub.docker.com/r/captainigloo69/tick/) [![Docker Pulls](https://img.shields.io/docker/pulls/captainigloo69/tick.svg)](https://hub.docker.com/r/captainigloo69/tick/) 
 [![Docker Stars](https://img.shields.io/docker/stars/captainigloo69/tick.svg)](https://hub.docker.com/r/captainigloo69/tick/)
 
 
