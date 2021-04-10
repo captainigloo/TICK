@@ -1,4 +1,4 @@
-FROM armv7/debian:buster-slim
+FROM debian:buster-slim
 LABEL maintainer="Captain Igloo"
 
 # Default versions
