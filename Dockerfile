@@ -1,4 +1,4 @@
-FROM debian:buster-slim
+FROM arm32v7/influxdb
 ARG DEBIAN_FRONTED=noninteractive
 # Install APT packages
 RUN apt-get update && apt-get install -y wget curl telnet supervisor net-tools
