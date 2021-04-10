@@ -1,56 +1,52 @@
 FROM debian:buster-slim
-LABEL maintainer="Captain Igloo"
+ARG DEBIAN_FRONTED=noninteractive
+# Install APT packages
+RUN apt-get update && apt-get install -y wget curl telnet supervisor net-tools
+RUN apt-get -y --force-yes install cron telnet vim git nano make gcc g++ apt-transport-https sudo logrotate
+RUN apt-get -y --force-yes install procps uptimed gnupg2 apt-utils sysvinit-core systemd
+#-sysv
+RUN apt-get -y --force-yes install lsb-release initscripts libsystemd0 libudev1 sysvinit-utils udev util-linux rsyslog 
 
-# Default versions
-ENV INFLUXDB_VERSION=1.6.4
-ENV TELEGRAF_VERSION=1.8.2-1
-ENV GRAFANA_VERSION=5.3.2
+# Download & Install Debian packages
 
-ENV GF_DATABASE_TYPE=sqlite3
+#Telegraf
+RUN wget https://dl.influxdata.com/telegraf/releases/telegraf_1.5.0-1_amd64.deb \
+  && dpkg -i telegraf_1.5.0-1_amd64.deb
 
-WORKDIR /root
+# InfluxDB
+RUN wget https://dl.influxdata.com/influxdb/releases/influxdb_1.4.2_amd64.deb \
+  && dpkg -i influxdb_1.4.2_amd64.deb
 
-# Clear previous sources
-RUN rm /var/lib/apt/lists/* -vf \
-    # Base dependencies
-    && apt-get -y update \
-    && apt-get -y install \
-        apt-utils \
-        apt-transport-https \
-        ca-certificates \
-        curl \
-        git \
-        htop \
-        libfontconfig \
-        nano \
-        vim \
-        net-tools \
-        wget \
-        gnupg \
-        supervisor \
-    # Install InfluxDB
-    && wget https://dl.influxdata.com/influxdb/releases/influxdb_${INFLUXDB_VERSION}_armhf.deb \
-    && dpkg -i influxdb_${INFLUXDB_VERSION}_armhf.deb && rm influxdb_${INFLUXDB_VERSION}_armhf.deb \
-    # Install Telegraf
-     && wget https://dl.influxdata.com/telegraf/releases/telegraf_${TELEGRAF_VERSION}_armhf.deb \
-     && dpkg -i telegraf_${TELEGRAF_VERSION}_armhf.deb && rm telegraf_${TELEGRAF_VERSION}_armhf.deb \
-    # Install Grafana
-     && wget https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana_${GRAFANA_VERSION}_armhf.deb \
-     && dpkg -i grafana_${GRAFANA_VERSION}_armhf.deb && rm grafana_${GRAFANA_VERSION}_armhf.deb \
-    # Cleanup
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
-    # Configure Supervisord
-    && mkdir -p /var/log/supervisor
+# Chronograf
+RUN wget https://dl.influxdata.com/chronograf/releases/chronograf_1.4.0.1_amd64.deb \
+  && dpkg -i chronograf_1.4.0.1_amd64.deb
 
-COPY supervisord/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+# Kapacitor
+RUN wget https://dl.influxdata.com/kapacitor/releases/kapacitor_1.4.0_amd64.deb \
+  && dpkg -i kapacitor_1.4.0_amd64.deb
 
-# Configure InfluxDB
-COPY influxdb/influxdb.conf /etc/influxdb/influxdb.conf
-COPY influxdb/init.sh /etc/init.d/influxdb
-RUN chmod 0755 /etc/init.d/influxdb
+RUN influxd config > /etc/influxdb/influxdb.generated.conf
 
-# Configure Grafana
-COPY grafana/grafana.ini /etc/grafana/grafana.ini
+# Configure supervisord
+ADD ./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+ADD ./influxdb.conf /etc/influxdb/influxdb.conf
+ADD ./telegraf.conf /opt/telegraf/telegraf.conf
+ADD ./chronograf.toml /opt/chronograf/config.toml
+RUN mkdir /opt/kapacitor/
+ADD ./kapacitor.conf /opt/kapacitor/kapacitor.conf
+RUN rm *.deb
+RUN mkdir -p /data/chronograf && chown -R chronograf:chronograf /data/chronograf && chmod 777 /data/chronograf
 
-CMD [ "/usr/bin/supervisord" ]
+VOLUME /data/influx/data
+VOLUME /data/influx/meta
+VOLUME /data/influx/wal
+VOLUME /data/kapacitor
+VOLUME /data/chronograf
+
+EXPOSE  80
+EXPOSE 8125/udp
+EXPOSE 10000
+EXPOSE 8083
+EXPOSE 8086
+EXPOSE 8088
+CMD     ["/usr/bin/supervisord"]
