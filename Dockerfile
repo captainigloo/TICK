@@ -1,5 +1,5 @@
-FROM arm32v7/debian:stretch-slim
-LABEL maintainer="Daniel Gomes <danielcesargomes@gmail.com>"
+FROM armv7l/debian:buster-slim
+LABEL maintainer="Captain Igloo"
 
 # Default versions
 ENV INFLUXDB_VERSION=1.6.4
