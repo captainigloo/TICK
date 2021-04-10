@@ -1,4 +1,4 @@
-FROM debian:stretch
+FROM resin/armv7hf-debian
 ARG DEBIAN_FRONTED=noninteractive
 # Install APT packages
 RUN apt-get update && apt-get install -y wget curl telnet supervisor net-tools
