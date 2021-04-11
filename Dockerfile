@@ -1,5 +1,5 @@
-FROM alpine:3.9
-#ARG DEBIAN_FRONTED=noninteractive
+FROM arm32v7/debian
+ARG DEBIAN_FRONTED=noninteractive
 # Install APT packages
 RUN apt-get update && apt-get install -y wget curl telnet supervisor net-tools
 RUN apt-get -y --force-yes install cron telnet vim git nano make gcc g++ apt-transport-https sudo logrotate
